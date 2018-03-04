@@ -93,8 +93,14 @@ public class BouncyLayout: UICollectionViewFlowLayout {
         let resistance = CGVector(dx: fabs(view.panGestureRecognizer.location(in: view).x - behavior.anchorPoint.x) / 1000, dy: fabs(view.panGestureRecognizer.location(in: view).y - behavior.anchorPoint.y) / 1000)
         
         switch scrollDirection {
-        case .horizontal: item.center.x += delta.dx < 0 ? max(delta.dx, delta.dx * resistance.dx) : min(delta.dx, delta.dx * resistance.dx)
-        case .vertical: item.center.y += delta.dy < 0 ? max(delta.dy, delta.dy * resistance.dy) : min(delta.dy, delta.dy * resistance.dy)
+        case .horizontal:
+            item.center.x += delta.dx < 0 ? max(delta.dx, delta.dx * resistance.dx) : min(delta.dx, delta.dx * resistance.dx)
+            item.center.y = floor(item.center.y)
+            item.center.x = floor(item.center.x)
+        case .vertical:
+            item.center.y += delta.dy < 0 ? max(delta.dy, delta.dy * resistance.dy) : min(delta.dy, delta.dy * resistance.dy)
+            item.center.y = floor(item.center.y)
+            item.center.x = floor(item.center.x)
         }
     }
 }
@@ -107,3 +113,4 @@ extension UIDynamicAnimator {
         addBehavior(behavior)
     }
 }
+
