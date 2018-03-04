@@ -61,7 +61,12 @@ public class BouncyLayout: UICollectionViewFlowLayout {
     
     private func newBehaviors(for attributes: [UICollectionViewLayoutAttributes]) -> [UIAttachmentBehavior] {
         let indexPaths = animator.behaviors.flatMap { (($0 as? UIAttachmentBehavior)?.items.first as? UICollectionViewLayoutAttributes)?.indexPath }
-        return attributes.flatMap { return indexPaths.contains($0.indexPath) ? nil : UIAttachmentBehavior(item: $0, attachedToAnchor: $0.center) }
+        return attributes.flatMap {
+            var center = $0.center
+            center.x = floor($0.center.x)
+            center.y = floor($0.center.y)
+            return indexPaths.contains($0.indexPath) ? nil : UIAttachmentBehavior(item: $0, attachedToAnchor: center)
+        }
     }
     
     public override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
